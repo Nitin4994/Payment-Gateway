@@ -1,0 +1,42 @@
+{% extends 'master_page2.html' %}
+{% block body %}
+<div class="container">
+        <h2 align="center">Our Plans</h2>
+    <table class="table">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">Plan name</th>
+                <th scope="col">Price</th>
+                <th scope="col">Monthly</th>
+                <th scope="col">Subscribe</th>
+            </tr>
+        </thead>
+        <tbody>
+            <form action="/subscription/paymentgateway/" method="post">{% csrf_token %}
+            <tr>
+                <td>Plan1<input type="hidden" name="planname" value="Plan1"></td>
+                <td>Rs.500/-<input type="hidden" name="price" value="500"></td>
+                <td>1 Month</td>
+                <td><input type="submit" value="Subscribe"></td>
+            </tr>
+            </form>
+            <form action="/subscription/paymentgateway/" method="post">{% csrf_token %}
+            <tr>
+                <td>Plan2<input type="hidden" name="planname" value="Plan2"></td>
+                <td>Rs.750/-<input type="hidden" name="price" value="750"></td>
+                <td>1 Month</td>
+                <td><input type="submit" value="Subscribe"></td>
+            </tr>
+            </form>
+            <form action="/subscription/paymentgateway/" method="post">{% csrf_token %}
+            <tr>
+                <td>Plan3<input type="hidden" name="planname" value="Plan3"></td>
+                <td>Rs.1000/-<input type="hidden" name="price" value="1000"></td>
+                <td>1 Month</td>
+                <td><input type="submit" value="Subscribe"></td>
+            </tr>
+            </form>
+        </tbody>
+    </table>
+</div>
+{% endblock %}

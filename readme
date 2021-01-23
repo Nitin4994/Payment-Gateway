@@ -1,0 +1,35 @@
+1. Hit the url http://localhost:8000/paymentgateway/ on the browser.
+Then login page opens.
+2. go to the registration page its link is given in the menu.
+3. Fill the form with first name, last name, email id(only acsept gmail account), password, address, date of birth, company name and register.
+4. Then automatic going to the login page with email id you type only your password and login.
+5. After login go to the home page.
+6. You see the plans on the home page.
+7. Click Subscribe to any plan. and go to the PayU form.
+8. There are already some textboxes filled it. You just write the phone number and Subscribe.
+9. Then go to the pay u money payment gateway page.
+10. Fill all the payment option with credit card
+for example: 
+	Card type: Visa
+	Card Name: Test
+	Card Number: 4012001037141112
+	Expire Date: 05/21
+	CVV: 123
+	OTP: 123456
+or 
+	Card type: Visa
+	Card Name: Test
+	Card Number: 5123456789012346
+	Expire Date: 05/21
+	CVV: 123
+	OTP: 123456
+11. Then if the transaction is is successful, it goes to success page and show the success message 
+other wise it goes to failure page and show the failure message.
+Once the plan is active, the same plan cannot be taken until it expires.
+12. Then you can go to 'Your Plans' page its link is given in the menu and check your subscribed plans.
+13. Also see your all activate and inactivate plans in 'Your Plans' page.
+14. If you want to cancel any plan, then ckick on Cancel Subscription link. then it will cancel and appear in inactivate table.
+15. If you want to resume the canceled one, click on the Resume Subscription link it will resume and appear in activate table.
+16. If any plan is expires, it does not appear on 'Your Plans' page.
+17. If you going to logout, you can logout from right corner of the 'Logout' button.
+Then it goes to the login page.

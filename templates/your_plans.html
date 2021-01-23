@@ -1,0 +1,77 @@
+{% extends 'master_page2.html' %}
+{% block body %}
+
+<div style="display:none">
+   	<input type="hidden" name="csrfmiddlewaretoken" value="{% csrf_token %}">
+</div>
+
+
+<div class="container">
+{% if active_subscription %}
+<h2 align="center">Your Activate Plans</h2>
+<table class="table">
+<thead class="thead-dark">
+<tr>
+    <th scope="col">Plan</th>
+    <th scope="col">Price</th>
+    <th scope="col">Subscription Date</th>
+    <th scope="col">Expire Date</th>
+    <th scope="col">Cancel Subscription</th>
+</tr>
+</thead>
+<tbody>
+{% for sub in active_subscription %}
+<tr>
+    <td>{{ sub.plan }}</td>
+    <td>{{ sub.price }}</td>
+    <td>{{ sub.date }}</td>
+    <td>{{ sub.expireDate }}</td>
+    <td><a href="/paymentgateway/cancel/{{ sub.id }}">Cancel Subscription</a></td>
+</tr>
+{% endfor %}
+</tbody>
+</table>
+{% endif %}
+
+    <br><br>
+
+{% if canceled_subscription %}
+<h2 align="center">Your Inactivate Plans</h2>
+<table class="table">
+<thead class="thead-dark">
+<tr>
+    <th scope="col">Plan</th>
+    <th scope="col">Price</th>
+    <th scope="col">Subscription Date</th>
+    <th scope="col">Expire Date</th>
+    <th scope="col">Resume Subscription</th>
+</tr>
+</thead>
+<tbody>
+{% for sub in canceled_subscription %}
+<tr>
+    <td>{{ sub.plan }}</td>
+    <td>{{ sub.price }}</td>
+    <td>{{ sub.date }}</td>
+    <td>{{ sub.expireDate }}</td>
+    <td><a href="/paymentgateway/resume/{{ sub.id }}">Resume Subscription</a></td>
+</tr>
+{% endfor %}
+</tbody>
+</table>
+{% endif %}
+
+{% if not active_subscription and not canceled_subscription %}
+
+<div class="alert alert-warning alert-dismissible fade show" role="alert">
+  <strong>Sorry!</strong> None of your plans are activated.
+{#  <button type="button" class="close" data-dismiss="alert" aria-label="Close">#}
+{#    <span aria-hidden="true">&times;</span>#}
+{#  </button>#}
+</div>
+
+{% endif %}
+
+</div>
+
+{% endblock %}

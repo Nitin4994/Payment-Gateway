@@ -1,0 +1,15 @@
+{% extends 'master_page2.html' %}
+{% block body %}
+
+<div class="alert alert-success center-block" role="alert">
+  <h3 class="alert-heading">Well done!</h3>
+  <h4 class="alert-heading">Thank You.</h4>
+  <p>Your order status is {{ status }}</p>
+  <p>Your Transaction ID for this transaction is {{ txnid }}</p>
+  <p>We have received a payment of Rs {{ amount}}</p>
+  <hr>
+  <p class="mb-0">Go to Your Plans page and check your plans.</p>
+</div>
+
+
+{% endblock %}

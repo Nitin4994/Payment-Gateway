@@ -1,0 +1,17 @@
+{% extends 'master_page1.html' %}
+{% block body %}
+
+        <h2 align="center">LOGIN</h2>
+        <form action="/paymentgateway/login/" method="post">{% csrf_token %}
+        <table align="center">
+            <tbody>
+            <tr><td>Email: gmail account only valid<input type="email" name="email" value="{{ manager.email }}" placeholder="example@gmail.com"></td></tr>
+            <tr><td>Password:<input type="password" name="password" value="" placeholder="Password"></td></tr>
+            <tr><td><input type="submit" value="Login"><a href="/paymentgateway/register/">Register Now!</a></td></tr>
+            </tbody>
+        </table>
+        </form>
+
+
+
+{% endblock %}

@@ -1,0 +1,16 @@
+{% extends 'master_page2.html' %}
+{% block body %}
+
+{#<div style="display:none">#}
+{#   	<input type="hidden" name="csrfmiddlewaretoken" value="{% csrf_token %}">#}
+{#</div>#}
+{#<h2 align="center">transaction failed</h2>#}
+
+<div class="alert alert-danger" role="alert">
+  <h4 class="alert-heading">Sorry!</h4>
+  <p>Your transaction is Failed.</p>
+  <hr>
+  <p class="mb-0">Try again...</p>
+</div>
+
+{% endblock %}

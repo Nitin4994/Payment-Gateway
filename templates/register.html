@@ -1,0 +1,27 @@
+{% extends 'master_page1.html' %}
+{% block body %}
+
+        <h2 align="center">REGISTER</h2>
+        <form action="/paymentgateway/register/save/" method="post">
+            {% csrf_token %}
+        <table align="center">
+            <tbody>
+            <tr>
+                <td>First Name:<input type="text" name="firstname" placeholder="First Name" value="{{ manager.fName }}"></td>
+                <td>Last Name:<input type="text" name="lastname" placeholder="Last Name" value="{{ manager.lName }}"></td>
+            </tr>
+            <tr>
+                <td>Email: gmail account only valid<input type="email" name="email" placeholder="example@gmail.com" value="{{ manager.email }}"></td>
+                <td>Password:<input type="password" name="password" value="{{ manager.password }}" placeholder="Password"></td></tr>
+            <tr><td colspan="2">Address:<textarea name="address" value="{{ manager.address }}" placeholder="Address">{{ manager.address }}</textarea></td></tr>
+            <tr>
+                <td>Date of Birth:<input type="date" name="dob" value="{{ manager.dob }}" placeholder="Date"></td>
+                <td>Company:<input type="text" name="company" value="{{ manager.company }}" placeholder="Company"></td></tr>
+            <tr><td colspan="2"><input type="submit" value="Register"><a href="/paymentgateway/">Login Here!</a></td></tr>
+            </tbody>
+        </table>
+        </form>
+
+
+
+{% endblock %}
