@@ -124,85 +124,105 @@ class paymentgateway(APIView):
                            "action": "."})
 
 #===================THIS CODE IS GETING FROM PAYUMONEY SITE===============================
-@csrf_protect
-@csrf_exempt
-def success(request):
-    c = {}
-    c.update(csrf(request))
-    status = request.POST["status"]
-    firstname = request.POST["firstname"]
-    amount = request.POST["amount"]
-    txnid = request.POST["txnid"]
-    posted_hash = request.POST["hash"]
-    key = request.POST["key"]
-    productinfo = request.POST["productinfo"]
-    email = request.POST["email"]
-    salt = "GQs7yium"
-    try:
-        additionalCharges = request.POST["additionalCharges"]
-        retHashSeq = additionalCharges + '|' + salt + '|' + status + '|||||||||||' + email + '|' + firstname + '|' + productinfo + '|' + amount + '|' + txnid + '|' + key
-    except Exception:
-        retHashSeq = salt + '|' + status + '|||||||||||' + email + '|' + firstname + '|' + productinfo + '|' + amount + '|' + txnid + '|' + key
-    hashh = hashlib.sha512(retHashSeq.encode('utf-8')).hexdigest().lower()
-    if (hashh != posted_hash):
-        print("Invalid Transaction. Please try again")
-    else:
-        print("Thank You. Your order status is ", status)
-        print("Your Transaction ID for this transaction is ", txnid)
-        print("We have received a payment of Rs. ", amount, ". Your order will soon be shipped.")
 
-    cur_date = datetime.date.today()
-    next_month_date = cur_date+timedelta(days=30)  #create expire date
+class success(APIView):
+    def get(self,request):
+        manager = Manager.objects.filter(email=request.session['email']).first()
+        return render(request, 'home.html',
+                      {'manager': {'fName': manager.fName, 'lName': manager.lName, 'email': manager.email,
+                                   'address': manager.address, 'dob': manager.dob, 'company': manager.company},
+                       'msg': '',
+                       'error': ''})
 
-    manager = Manager.objects.filter(email=email).first()
+    @csrf_protect
+    @csrf_exempt
+    def post(self,request):
+        c = {}
+        c.update(csrf(request))
+        status = request.POST["status"]
+        firstname = request.POST["firstname"]
+        amount = request.POST["amount"]
+        txnid = request.POST["txnid"]
+        posted_hash = request.POST["hash"]
+        key = request.POST["key"]
+        productinfo = request.POST["productinfo"]
+        email = request.POST["email"]
+        salt = "GQs7yium"
+        try:
+            additionalCharges = request.POST["additionalCharges"]
+            retHashSeq = additionalCharges + '|' + salt + '|' + status + '|||||||||||' + email + '|' + firstname + '|' + productinfo + '|' + amount + '|' + txnid + '|' + key
+        except Exception:
+            retHashSeq = salt + '|' + status + '|||||||||||' + email + '|' + firstname + '|' + productinfo + '|' + amount + '|' + txnid + '|' + key
+        hashh = hashlib.sha512(retHashSeq.encode('utf-8')).hexdigest().lower()
+        if (hashh != posted_hash):
+            print("Invalid Transaction. Please try again")
+        else:
+            print("Thank You. Your order status is ", status)
+            print("Your Transaction ID for this transaction is ", txnid)
+            print("We have received a payment of Rs. ", amount, ". Your order will soon be shipped.")
 
-    #create Subscription object
-    subobj = Subscription(plan=productinfo, date=cur_date,
-                          price=float(amount),expireDate=next_month_date,transactionId=txnid)
-    subobj.mangerref=manager
-    subobj.save()       #save Subscription
+        cur_date = datetime.date.today()
+        next_month_date = cur_date+timedelta(days=30)  #create expire date
 
-    return render(request, 'sucess.html',
-                  {"manager": manager,
-                   "txnid": txnid,
-                   "status": status,
-                   "amount": amount})
+        manager = Manager.objects.filter(email=email).first()
+
+        #create Subscription object
+        subobj = Subscription(plan=productinfo, date=cur_date,
+                              price=float(amount),expireDate=next_month_date,transactionId=txnid)
+        subobj.mangerref=manager
+        subobj.save()       #save Subscription
+
+        return render(request, 'sucess.html',
+                      {"manager": manager,
+                       "txnid": txnid,
+                       "status": status,
+                       "amount": amount})
 
 #===================THIS CODE IS GETING FROM PAYUMONEY SITE===============================
-@csrf_protect
-@csrf_exempt
-def failure(request):
-    c = {}
-    c.update(csrf(request))
-    status = request.POST["status"]
-    firstname = request.POST["firstname"]
-    amount = request.POST["amount"]
-    txnid = request.POST["txnid"]
-    posted_hash = request.POST["hash"]
-    key = request.POST["key"]
-    productinfo = request.POST["productinfo"]
-    email = request.POST["email"]
-    salt = ""
-    try:
-        additionalCharges = request.POST["additionalCharges"]
-        retHashSeq = additionalCharges + '|' + salt + '|' + status + '|||||||||||' + email + '|' + firstname + '|' + productinfo + '|' + amount + '|' + txnid + '|' + key
-    except Exception:
-        retHashSeq = salt + '|' + status + '|||||||||||' + email + '|' + firstname + '|' + productinfo + '|' + amount + '|' + txnid + '|' + key
-    hashh = hashlib.sha512(retHashSeq.encode('utf-8')).hexdigest().lower()
-    if (hashh != posted_hash):
-        print("Invalid Transaction. Please try again")
-    else:
-        print("Thank You. Your order status is ", status)
-        print("Your Transaction ID for this transaction is ", txnid)
-        print("We have received a payment of Rs. ", amount, ". Your order will soon be shipped.")
 
-    #create manager object
-    manager = Manager(fName=firstname,email=email)
-    return render(request, 'Failure.html',
-                    {"manager": manager,
-                     "txnid": txnid,
-                     "status": status,
-                     "amount": amount})
-    #return render_to_response("Failure.html", RequestContext(request, c))
+class failure(APIView):
+    def get(self,request):
+        manager = Manager.objects.filter(email=request.session['email']).first()
+        return render(request, 'home.html',
+                      {'manager': {'fName': manager.fName, 'lName': manager.lName, 'email': manager.email,
+                                   'address': manager.address, 'dob': manager.dob, 'company': manager.company},
+                       'msg': '',
+                       'error': ''})
+
+    @csrf_protect
+    @csrf_exempt
+    def post(self,request):
+        c = {}
+        c.update(csrf(request))
+        status = request.POST["status"]
+        firstname = request.POST["firstname"]
+        amount = request.POST["amount"]
+        txnid = request.POST["txnid"]
+        posted_hash = request.POST["hash"]
+        key = request.POST["key"]
+        productinfo = request.POST["productinfo"]
+        email = request.POST["email"]
+        salt = ""
+        try:
+            additionalCharges = request.POST["additionalCharges"]
+            retHashSeq = additionalCharges + '|' + salt + '|' + status + '|||||||||||' + email + '|' + firstname + '|' + productinfo + '|' + amount + '|' + txnid + '|' + key
+        except Exception:
+            retHashSeq = salt + '|' + status + '|||||||||||' + email + '|' + firstname + '|' + productinfo + '|' + amount + '|' + txnid + '|' + key
+        hashh = hashlib.sha512(retHashSeq.encode('utf-8')).hexdigest().lower()
+        if (hashh != posted_hash):
+            print("Invalid Transaction. Please try again")
+        else:
+            print("Thank You. Your order status is ", status)
+            print("Your Transaction ID for this transaction is ", txnid)
+            print("We have received a payment of Rs. ", amount, ". Your order will soon be shipped.")
+
+        #create manager object
+        manager = Manager(fName=firstname,email=email)
+        return render(request, 'Failure.html',
+                        {"manager": manager,
+                         "txnid": txnid,
+                         "status": status,
+                         "amount": amount})
+        #return render_to_response("Failure.html", RequestContext(request, c))
 
 
